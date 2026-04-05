@@ -333,6 +333,13 @@ Thanks goes to these amazing people:
             <sub><b>KindaJayant</b></sub>
         </a>
     </td>
+            <td align="center">
+        <a href="https://github.com/Yashkapure06">
+            <img src="https://avatars.githubusercontent.com/u/61585443?v=4" width="100;" alt="Yashkapure06"/>
+            <br />
+            <sub><b>Yashkapure06</b></sub>
+        </a>
+    </td>
 		</tr>
 	</tbody>
 </table>
