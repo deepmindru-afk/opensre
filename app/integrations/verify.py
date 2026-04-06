@@ -52,6 +52,7 @@ SUPPORTED_VERIFY_SERVICES = (
     "google_docs",
     "vercel",
     "opsgenie",
+    "clickhouse",
 )
 CORE_VERIFY_SERVICES = frozenset({"grafana", "datadog", "honeycomb", "coralogix", "aws"})
 _SUPPORTED_GRAFANA_TYPES = ("loki", "tempo", "prometheus")
@@ -665,6 +666,19 @@ def _verify_opsgenie(source: str, config: dict[str, Any]) -> dict[str, str]:
     )
 
 
+def _verify_clickhouse(source: str, config: dict[str, Any]) -> dict[str, str]:
+    from app.integrations.clickhouse import build_clickhouse_config, validate_clickhouse_config
+
+    clickhouse_config = build_clickhouse_config(config)
+    result = validate_clickhouse_config(clickhouse_config)
+    return _result(
+        "clickhouse",
+        source,
+        "passed" if result.ok else "failed",
+        result.detail,
+    )
+
+
 def verify_integrations(
     service: str | None = None,
     *,
@@ -725,6 +739,8 @@ def verify_integrations(
             results.append(_verify_vercel(source, config))
         elif current_service == "opsgenie":
             results.append(_verify_opsgenie(source, config))
+        elif current_service == "clickhouse":
+            results.append(_verify_clickhouse(source, config))
 
     return results
 
