@@ -318,13 +318,16 @@ _SAFE_INV_ID = re.compile(r"[\w\-]+")
 def _safe_investigation_path(inv_id: str) -> Path:
     """Resolve an investigation file path with path-traversal protection.
 
-    Rejects any ID that contains characters outside ``[\\w-]`` so the
-    constructed filename is guaranteed to stay inside INVESTIGATIONS_DIR.
+    Rejects any ID that contains characters outside ``[\\w-]`` and verifies
+    the normalised path stays inside INVESTIGATIONS_DIR.
     """
     if not _SAFE_INV_ID.fullmatch(inv_id):
         raise HTTPException(status_code=400, detail="Invalid investigation ID")
-    filename = f"{inv_id}.md"
-    return INVESTIGATIONS_DIR / filename
+    base = os.path.realpath(INVESTIGATIONS_DIR)
+    fullpath = os.path.realpath(os.path.join(base, f"{inv_id}.md"))
+    if not fullpath.startswith(base + os.sep):
+        raise HTTPException(status_code=400, detail="Invalid investigation ID")
+    return Path(fullpath)
 
 
 def _slugify(text: str) -> str:
@@ -384,7 +387,8 @@ def _normalized_request_alert(req: InvestigateRequest) -> dict[str, Any]:
     if req.vercel_url:
         raw_alert.setdefault("vercel_url", req.vercel_url)
         raw_alert.setdefault("vercel_log_url", req.vercel_url)
-    return enrich_remote_alert_from_vercel(raw_alert)
+    resolved_alert = enrich_remote_alert_from_vercel(raw_alert)
+    return resolved_alert if isinstance(resolved_alert, dict) else raw_alert
 
 
 def _execute_investigation(
@@ -405,8 +409,8 @@ def _execute_investigation(
     )
     result = run_investigation_cli(
         raw_alert=raw_alert,
-        alert_name=alert_name,
-        pipeline_name=pipeline_name,
-        severity=severity,
+        alert_name=resolved_alert_name,
+        pipeline_name=resolved_pipeline_name,
+        severity=resolved_severity,
     )
     return result, resolved_alert_name, resolved_pipeline_name, resolved_severity

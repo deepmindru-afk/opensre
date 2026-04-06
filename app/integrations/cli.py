@@ -395,4 +395,4 @@ def cmd_verify(service: str | None, *, send_slack_test: bool = False) -> int:
         _json_echo(results)
     else:
         print(format_verification_results(results))
-    return verification_exit_code(results, requested_service=service)
+    return int(verification_exit_code(results, requested_service=service))
