@@ -1,7 +1,7 @@
 <div align="center">
 
 <p align="center">
-  <img width="2136" height="476" alt="github-readme-tracer-banner" src="https://github.com/user-attachments/assets/fac67ac2-e40e-4d58-8421-829ed0ce2a4d" />
+  <img width="2136" height="476" alt="opensre-github-banner" src="https://github.com/user-attachments/assets/68ac81ff-dca0-45fb-9b92-9cc342f173f6" />
 </p>
 
 <h1>OpenSRE: Build Your Own AI SRE Agents</h1>
