@@ -93,6 +93,22 @@ def mysql_config_from_env() -> MySQLConfig | None:
     })
 
 
+def mysql_is_available(sources: dict[str, dict]) -> bool:
+    """Check if MySQL integration credentials are present."""
+    my = sources.get("mysql", {})
+    return bool(my.get("host") and my.get("database"))
+
+
+def mysql_extract_params(sources: dict[str, dict]) -> dict[str, Any]:
+    """Extract MySQL connection params from resolved integrations."""
+    my = sources.get("mysql", {})
+    return {
+        "host": my.get("host", ""),
+        "database": my.get("database", ""),
+        "port": my.get("port", DEFAULT_MYSQL_PORT),
+    }
+
+
 def resolve_mysql_config(host: str, database: str, port: int = DEFAULT_MYSQL_PORT) -> MySQLConfig:
     """Build a config for the given host/database, resolving credentials from store or env.
 

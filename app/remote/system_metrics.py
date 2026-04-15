@@ -7,6 +7,7 @@ endpoint degrades gracefully on any platform.
 
 from __future__ import annotations
 
+import logging
 import os
 import platform
 import shutil
@@ -16,6 +17,8 @@ import sys
 import time
 from pathlib import Path
 from typing import Any
+
+logger = logging.getLogger(__name__)
 
 _resource: Any | None
 

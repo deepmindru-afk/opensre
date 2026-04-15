@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.mysql import get_replication_status, resolve_mysql_config
+from app.integrations.mysql import (
+    get_replication_status,
+    mysql_extract_params,
+    mysql_is_available,
+    resolve_mysql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve MySQL replication status including IO/SQL thread health and replica lag.",
     source="mysql",
     surfaces=("investigation", "chat"),
+    is_available=mysql_is_available,
+    extract_params=mysql_extract_params,
     use_cases=[
         "Checking replica lag during high-write incidents",
         "Verifying replication IO and SQL threads are running",

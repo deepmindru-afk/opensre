@@ -1,12 +1,15 @@
 """Lambda client for function inspection and log retrieval."""
 
 import base64
+import logging
 from contextlib import suppress
 from io import BytesIO
 from typing import Any
 from zipfile import ZipFile
 
 from app.services.env import make_boto3_client, require_aws_credentials
+
+logger = logging.getLogger(__name__)
 
 try:
     from botocore.exceptions import ClientError

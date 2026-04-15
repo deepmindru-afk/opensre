@@ -20,7 +20,10 @@ def _merge_state(state: AgentState, updates: dict[str, Any]) -> None:
     for key, value in updates.items():
         if key == "messages":
             messages = list(state_any.get("messages", []))
-            messages.extend(value) if isinstance(value, list) else messages.append(value)
+            if isinstance(value, list):
+                messages.extend(value)
+            else:
+                messages.append(value)
             state_any["messages"] = messages
             continue
         state_any[key] = value

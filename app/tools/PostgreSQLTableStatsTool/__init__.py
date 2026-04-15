@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.postgresql import get_table_stats, resolve_postgresql_config
+from app.integrations.postgresql import (
+    get_table_stats,
+    postgresql_extract_params,
+    postgresql_is_available,
+    resolve_postgresql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve PostgreSQL table statistics including size, row counts, index usage, and maintenance info.",
     source="postgresql",
     surfaces=("investigation", "chat"),
+    is_available=postgresql_is_available,
+    extract_params=postgresql_extract_params,
     use_cases=[
         "Identifying large tables or rapid table growth during storage incidents",
         "Analyzing table scan patterns and index usage efficiency",

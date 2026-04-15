@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.mysql import get_slow_queries, resolve_mysql_config
+from app.integrations.mysql import (
+    get_slow_queries,
+    mysql_extract_params,
+    mysql_is_available,
+    resolve_mysql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve slow MySQL queries from performance_schema, ranked by average execution time.",
     source="mysql",
     surfaces=("investigation", "chat"),
+    is_available=mysql_is_available,
+    extract_params=mysql_extract_params,
     use_cases=[
         "Identifying slow queries that may be causing performance degradation",
         "Analyzing query execution patterns during incident timeframes",

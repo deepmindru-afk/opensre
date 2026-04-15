@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.postgresql import get_slow_queries, resolve_postgresql_config
+from app.integrations.postgresql import (
+    get_slow_queries,
+    postgresql_extract_params,
+    postgresql_is_available,
+    resolve_postgresql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve slow PostgreSQL queries from pg_stat_statements extension, ranked by mean execution time.",
     source="postgresql",
     surfaces=("investigation", "chat"),
+    is_available=postgresql_is_available,
+    extract_params=postgresql_extract_params,
     use_cases=[
         "Identifying slow queries that may be causing performance degradation",
         "Analyzing query execution patterns during incident timeframes",

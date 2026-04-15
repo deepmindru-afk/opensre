@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.postgresql import get_replication_status, resolve_postgresql_config
+from app.integrations.postgresql import (
+    get_replication_status,
+    postgresql_extract_params,
+    postgresql_is_available,
+    resolve_postgresql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve PostgreSQL replication status including replica lag, WAL positions, and streaming status.",
     source="postgresql",
     surfaces=("investigation", "chat"),
+    is_available=postgresql_is_available,
+    extract_params=postgresql_extract_params,
     use_cases=[
         "Investigating replication lag issues during database incidents",
         "Checking replica health and synchronization status",

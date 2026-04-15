@@ -91,6 +91,22 @@ def postgresql_config_from_env() -> PostgreSQLConfig | None:
     })
 
 
+def postgresql_is_available(sources: dict[str, dict]) -> bool:
+    """Check if PostgreSQL integration credentials are present."""
+    pg = sources.get("postgresql", {})
+    return bool(pg.get("host") and pg.get("database"))
+
+
+def postgresql_extract_params(sources: dict[str, dict]) -> dict[str, Any]:
+    """Extract PostgreSQL connection params from resolved integrations."""
+    pg = sources.get("postgresql", {})
+    return {
+        "host": pg.get("host", ""),
+        "database": pg.get("database", ""),
+        "port": pg.get("port", DEFAULT_POSTGRESQL_PORT),
+    }
+
+
 def resolve_postgresql_config(
     host: str, database: str, port: int = DEFAULT_POSTGRESQL_PORT
 ) -> PostgreSQLConfig:

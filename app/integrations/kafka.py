@@ -232,7 +232,7 @@ def get_consumer_group_lag(
                 if tp.error:
                     continue
                 # Get high watermark for this partition
-                lo, hi = consumer.get_watermark_offsets(
+                _lo, hi = consumer.get_watermark_offsets(
                     TopicPartition(tp.topic, tp.partition),
                     timeout=config.timeout_seconds,
                 )

@@ -51,10 +51,10 @@ class HoneycombTracesTool(BaseTool):
         "required": ["dataset"],
     }
 
-    def is_available(self, sources: dict) -> bool:
+    def is_available(self, sources: dict[str, dict]) -> bool:
         return _honeycomb_available(sources)
 
-    def extract_params(self, sources: dict) -> dict[str, Any]:
+    def extract_params(self, sources: dict[str, dict]) -> dict[str, Any]:
         honeycomb = sources["honeycomb"]
         return {
             "service_name": honeycomb.get("service_name", ""),

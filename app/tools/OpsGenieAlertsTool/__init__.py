@@ -50,10 +50,10 @@ class OpsGenieAlertsTool(BaseTool):
         "total": "Total number of alerts returned",
     }
 
-    def is_available(self, sources: dict) -> bool:
+    def is_available(self, sources: dict[str, dict]) -> bool:
         return bool(sources.get("opsgenie", {}).get("connection_verified"))
 
-    def extract_params(self, sources: dict) -> dict[str, Any]:
+    def extract_params(self, sources: dict[str, dict]) -> dict[str, Any]:
         og = sources["opsgenie"]
         return {
             "api_key": og.get("api_key", ""),

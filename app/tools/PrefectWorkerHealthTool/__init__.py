@@ -81,10 +81,10 @@ class PrefectWorkerHealthTool(BaseTool):
         "unhealthy_workers": "Workers that are OFFLINE or UNHEALTHY",
     }
 
-    def is_available(self, sources: dict[str, Any]) -> bool:
+    def is_available(self, sources: dict[str, dict]) -> bool:
         return bool(sources.get("prefect", {}).get("connection_verified"))
 
-    def extract_params(self, sources: dict[str, Any]) -> dict[str, Any]:
+    def extract_params(self, sources: dict[str, dict]) -> dict[str, Any]:
         prefect = sources.get("prefect", {})
         return {
             "api_url": prefect.get("api_url", ""),

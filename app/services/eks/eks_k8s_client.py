@@ -11,9 +11,9 @@ import weakref
 from typing import Any
 
 import boto3
-import botocore.auth
-import botocore.awsrequest
-import botocore.credentials
+from botocore.auth import SigV4QueryAuth
+from botocore.awsrequest import AWSRequest
+from botocore.credentials import Credentials as BotoCreds
 from kubernetes import client as k8s_client
 
 logger = logging.getLogger(__name__)
@@ -37,20 +37,20 @@ def _generate_eks_token(cluster_name: str, assumed_creds: dict[str, Any], region
     x-k8s-aws-id header included in the canonical request before signing.
     This matches exactly what aws-iam-authenticator and `aws eks get-token` do.
     """
-    creds = botocore.credentials.Credentials(
+    creds = BotoCreds(
         access_key=assumed_creds["AccessKeyId"],
         secret_key=assumed_creds["SecretAccessKey"],
         token=assumed_creds["SessionToken"],
     )
 
     sts_url = "https://sts.amazonaws.com/?Action=GetCallerIdentity&Version=2011-06-15"
-    request = botocore.awsrequest.AWSRequest(
+    request = AWSRequest(
         method="GET",
         url=sts_url,
         headers={"x-k8s-aws-id": cluster_name},
     )
 
-    signer = botocore.auth.SigV4QueryAuth(creds, "sts", region, expires=60)
+    signer = SigV4QueryAuth(creds, "sts", region, expires=60)
     signer.add_auth(request)
 
     signed_url = request.url

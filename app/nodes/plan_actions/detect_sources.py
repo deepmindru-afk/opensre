@@ -5,12 +5,15 @@
 and extract their parameters.
 """
 
+import logging
 from datetime import UTC, datetime, timedelta
 from typing import Any
 from urllib.parse import urlparse
 
 from app.services.coralogix import build_coralogix_logs_query
 from app.tools.GrafanaLogsTool import _map_pipeline_to_service_name
+
+logger = logging.getLogger(__name__)
 
 
 def _alert_time_range_minutes(raw_alert: dict[str, Any]) -> int:

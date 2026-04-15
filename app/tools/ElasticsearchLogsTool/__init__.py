@@ -56,10 +56,10 @@ class ElasticsearchLogsTool(BaseTool):
         "required": ["query"],
     }
 
-    def is_available(self, sources: dict) -> bool:
+    def is_available(self, sources: dict[str, dict]) -> bool:
         return bool(sources.get("elasticsearch", {}).get("connection_verified"))
 
-    def extract_params(self, sources: dict) -> dict:
+    def extract_params(self, sources: dict[str, dict]) -> dict[str, Any]:
         es = sources.get("elasticsearch", {})
         return {
             "query": es.get("default_query", "*"),

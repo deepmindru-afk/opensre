@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.mysql import get_current_processes, resolve_mysql_config
+from app.integrations.mysql import (
+    get_current_processes,
+    mysql_extract_params,
+    mysql_is_available,
+    resolve_mysql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve currently active MySQL processes above a duration threshold, excluding sleeping connections.",
     source="mysql",
     surfaces=("investigation", "chat"),
+    is_available=mysql_is_available,
+    extract_params=mysql_extract_params,
     use_cases=[
         "Identifying long-running queries blocking other operations",
         "Investigating lock contention or deadlock situations",

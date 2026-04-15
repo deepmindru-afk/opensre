@@ -579,11 +579,9 @@ def cmd_list() -> None:
 def cmd_show(service: str | None) -> None:
     if not service:
         _die("Usage: show <service>")
-        return
     record = get_integration(service)
     if not record:
         _die(f"No active integration for '{service}'.")
-        return
     _json_echo(_mask(record))
 
 
@@ -592,7 +590,6 @@ def cmd_remove(service: str | None) -> None:
 
     if not service:
         _die("Usage: remove <service>")
-        return
     if not is_yes():
         try:
             confirmed = questionary.confirm(f"  Remove '{service}'?", default=False).ask()

@@ -987,7 +987,7 @@ def _configure_sentry() -> tuple[str, str]:
         _console.print("[dim]Try again or press Ctrl+C to cancel.[/]")
 
 def _configure_notion() -> tuple[str, str]:
-    _, credentials = _integration_defaults("notion")
+    _, _credentials = _integration_defaults("notion")
     _console.print("\n[bold]Notion Integration[/bold]")
     _console.print("Create an internal integration at https://www.notion.so/my-integrations")
     _console.print("then share your target database with the integration.\n")
@@ -1007,7 +1007,7 @@ def _configure_notion() -> tuple[str, str]:
         _console.print("[dim]Try again or press Ctrl+C to cancel.[/]")
 
 def _configure_jira() -> tuple[str, str]:
-    _, credentials = _integration_defaults("jira")
+    _, _credentials = _integration_defaults("jira")
     _console.print("\n[bold]Jira Integration[/bold]")
     _console.print(
         "Create an API token at https://id.atlassian.com/manage-profile/security/api-tokens\n"

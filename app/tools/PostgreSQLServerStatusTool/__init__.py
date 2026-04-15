@@ -2,7 +2,12 @@
 
 from typing import Any
 
-from app.integrations.postgresql import get_server_status, resolve_postgresql_config
+from app.integrations.postgresql import (
+    get_server_status,
+    postgresql_extract_params,
+    postgresql_is_available,
+    resolve_postgresql_config,
+)
 from app.tools.tool_decorator import tool
 
 
@@ -11,6 +16,8 @@ from app.tools.tool_decorator import tool
     description="Retrieve PostgreSQL server metrics including connections, transactions, cache hit ratio, and database statistics.",
     source="postgresql",
     surfaces=("investigation", "chat"),
+    is_available=postgresql_is_available,
+    extract_params=postgresql_extract_params,
     use_cases=[
         "Checking PostgreSQL server health during an incident",
         "Identifying connection saturation or exhaustion issues",

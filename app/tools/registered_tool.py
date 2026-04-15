@@ -22,6 +22,10 @@ def _always_available(_sources: dict[str, dict]) -> bool:
     return True
 
 
+def _never_available(_sources: dict[str, dict]) -> bool:
+    return False
+
+
 def _extract_no_params(_sources: dict[str, dict]) -> dict[str, Any]:
     return {}
 
@@ -164,6 +168,11 @@ class RegisteredTool:
             raise TypeError("is_available must be callable")
         if not callable(self.extract_params):
             raise TypeError("extract_params must be callable")
+
+        has_required_params = bool(self.input_schema.get("required"))
+        uses_default_extract = self.extract_params is _extract_no_params
+        if has_required_params and uses_default_extract:
+            self.is_available = _never_available
 
     @property
     def inputs(self) -> dict[str, str]:

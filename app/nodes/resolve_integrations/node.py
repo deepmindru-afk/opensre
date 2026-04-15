@@ -72,6 +72,30 @@ _SERVICE_KEY_MAP = {
 }
 
 
+def _verify_resolved_auth(resolved: dict[str, Any]) -> None:
+    """Verify credentials for resolved integrations that require network auth.
+
+    Mutates *resolved* in-place, removing entries whose credentials are
+    rejected by the upstream service.  This avoids wasted queries and
+    confusing error messages during evidence gathering.
+    """
+    grafana_int = resolved.get("grafana")
+    if grafana_int and isinstance(grafana_int, dict):
+        if "_backend" in grafana_int:
+            return  # synthetic/test backend — skip verification
+        endpoint = grafana_int.get("endpoint", "")
+        api_key = grafana_int.get("api_key", "")
+        if endpoint and api_key:
+            from app.services.grafana import verify_grafana_auth
+
+            if not verify_grafana_auth(endpoint, api_key):
+                logger.warning(
+                    "[integrations] Grafana auth failed for %s — removing from available integrations",
+                    endpoint,
+                )
+                del resolved["grafana"]
+
+
 def _classify_integrations(
     integrations: list[dict[str, Any]],
 ) -> dict[str, Any]:
@@ -923,6 +947,7 @@ def node_resolve_integrations(
             return _resolve_from_local_sources(tracker)
 
     resolved = _classify_integrations(all_integrations)
+    _verify_resolved_auth(resolved)
     services = [k for k in resolved if k != "_all"]
 
     tracker.complete(
@@ -955,6 +980,7 @@ def _resolve_from_local_sources(tracker: Any) -> dict:
         return {"resolved_integrations": {}}
 
     resolved = _classify_integrations(integrations)
+    _verify_resolved_auth(resolved)
     services = [k for k in resolved if k != "_all"]
     source_labels: list[str] = []
     if store_integrations:
@@ -987,6 +1013,7 @@ def _resolve_remote_with_local_fallback(
         remote_integrations,
     )
     resolved = _classify_integrations(integrations)
+    _verify_resolved_auth(resolved)
     services = [k for k in resolved if k != "_all"]
 
     source_labels = ["remote"]

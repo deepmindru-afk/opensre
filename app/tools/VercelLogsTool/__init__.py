@@ -60,10 +60,10 @@ class VercelLogsTool(BaseTool):
         "deployment": "Deployment metadata including state and git info",
     }
 
-    def is_available(self, sources: dict) -> bool:
+    def is_available(self, sources: dict[str, dict]) -> bool:
         return bool(sources.get("vercel", {}).get("connection_verified"))
 
-    def extract_params(self, sources: dict) -> dict[str, Any]:
+    def extract_params(self, sources: dict[str, dict]) -> dict[str, Any]:
         vercel = sources["vercel"]
         return {
             "api_token": vercel.get("api_token", ""),

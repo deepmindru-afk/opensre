@@ -16,9 +16,32 @@ __all__ = [
     "GrafanaClient",
     "get_grafana_client",
     "get_grafana_client_from_credentials",
+    "verify_grafana_auth",
 ]
 
 _grafana_client_cache: dict[str, GrafanaClient] = {}
+
+
+def verify_grafana_auth(endpoint: str, api_key: str, *, timeout: int = 5) -> bool:
+    """Check Grafana token validity with a lightweight GET /api/org call.
+
+    Used during resolve_integrations to drop integrations with invalid
+    credentials before they waste time during evidence gathering.
+    """
+    import requests
+
+    if not endpoint or not api_key:
+        return False
+    try:
+        response = requests.get(
+            f"{endpoint.rstrip('/')}/api/org",
+            headers={"Authorization": f"Bearer {api_key}"},
+            timeout=timeout,
+        )
+        return response.status_code == 200
+    except Exception:
+        logger.debug("[grafana] Auth probe to %s failed", endpoint, exc_info=True)
+        return False
 
 
 def get_grafana_client() -> GrafanaClient:

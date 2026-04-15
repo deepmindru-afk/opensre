@@ -60,10 +60,10 @@ class CoralogixLogsTool(BaseTool):
         "required": ["query"],
     }
 
-    def is_available(self, sources: dict) -> bool:
+    def is_available(self, sources: dict[str, dict]) -> bool:
         return _coralogix_available(sources)
 
-    def extract_params(self, sources: dict) -> dict[str, Any]:
+    def extract_params(self, sources: dict[str, dict]) -> dict[str, Any]:
         coralogix = sources["coralogix"]
         return {
             "query": coralogix.get("default_query", "source logs | limit 50"),

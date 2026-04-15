@@ -37,3 +37,4 @@ def register_commands(cli: click.Group) -> None:
     """Attach all top-level commands to the root CLI group."""
     for command in _COMMANDS:
         cli.add_command(command)
+    cli.add_command(tests, name="test")
