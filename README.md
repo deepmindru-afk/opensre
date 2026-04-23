@@ -740,6 +740,13 @@ Thanks goes to these amazing people:
             <sub><b>udit-rawat</b></sub>
         </a>
     </td>
+            <td align="center">
+        <a href="https://github.com/muddlebee">
+            <img src="https://avatars.githubusercontent.com/u/8139783?v=4" width="100" alt="muddlebee"/>
+            <br />
+            <sub><b>muddlebee</b></sub>
+        </a>
+    </td>
 		</tr>
 	</tbody>
 </table>
