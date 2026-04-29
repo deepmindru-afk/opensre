@@ -9,7 +9,7 @@ without a wrapped HTTP response, and the empty-result envelope.
 from __future__ import annotations
 
 from typing import Any
-from unittest.mock import MagicMock
+from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -65,25 +65,27 @@ class _FakeLokiHost(LokiMixin):
 
 _QUERY = '{service_name="lambda-mock-dag"}'
 
-_TWO_STREAM_RESPONSE = {
-    "status": "success",
-    "data": {
-        "resultType": "streams",
-        "result": [
-            {
-                "stream": {"service_name": "lambda-mock-dag", "level": "error"},
-                "values": [
-                    ["1700000000000000000", "boom"],
-                    ["1700000000000000001", "crash"],
-                ],
-            },
-            {
-                "stream": {"service_name": "lambda-mock-dag", "level": "info"},
-                "values": [["1700000000000000002", "started"]],
-            },
-        ],
-    },
-}
+
+def _two_stream_response() -> dict[str, Any]:
+    return {
+        "status": "success",
+        "data": {
+            "resultType": "streams",
+            "result": [
+                {
+                    "stream": {"service_name": "lambda-mock-dag", "level": "error"},
+                    "values": [
+                        ["1700000000000000000", "boom"],
+                        ["1700000000000000001", "crash"],
+                    ],
+                },
+                {
+                    "stream": {"service_name": "lambda-mock-dag", "level": "info"},
+                    "values": [["1700000000000000002", "started"]],
+                },
+            ],
+        },
+    }
 
 
 # ---------------------------------------------------------------------------
@@ -96,7 +98,7 @@ class TestQueryLokiSuccess:
 
     def test_flattens_streams_into_log_rows(self) -> None:
         host = _FakeLokiHost()
-        host.make_request_mock.return_value = _TWO_STREAM_RESPONSE
+        host.make_request_mock.return_value = _two_stream_response()
 
         result = host.query_loki(_QUERY)
 
@@ -109,7 +111,7 @@ class TestQueryLokiSuccess:
 
     def test_each_log_row_carries_timestamp_message_and_labels(self) -> None:
         host = _FakeLokiHost()
-        host.make_request_mock.return_value = _TWO_STREAM_RESPONSE
+        host.make_request_mock.return_value = _two_stream_response()
 
         result = host.query_loki(_QUERY)
         first = result["logs"][0]
@@ -124,19 +126,21 @@ class TestQueryLokiSuccess:
 
     def test_uses_loki_datasource_url_and_passes_query_params(self) -> None:
         host = _FakeLokiHost(loki_datasource_uid="my-loki")
-        host.make_request_mock.return_value = _TWO_STREAM_RESPONSE
+        host.make_request_mock.return_value = _two_stream_response()
 
-        host.query_loki(_QUERY, time_range_minutes=5, limit=42)
+        fake_now_s = 1_700_000_000.0
+        with patch("app.services.grafana.loki.time.time", return_value=fake_now_s):
+            host.query_loki(_QUERY, time_range_minutes=5, limit=42)
 
         assert host.last_url is not None
         assert "/api/datasources/proxy/uid/my-loki/loki/api/v1/query_range" in host.last_url
         assert host.last_params is not None
         assert host.last_params["query"] == _QUERY
         assert host.last_params["limit"] == "42"
-        start = int(host.last_params["start"])
-        end = int(host.last_params["end"])
-        assert end > start
-        assert end - start == 5 * 60 * 10**9
+        expected_end = int(fake_now_s * 1e9)
+        expected_start = expected_end - (5 * 60 * int(1e9))
+        assert host.last_params["start"] == str(expected_start)
+        assert host.last_params["end"] == str(expected_end)
 
 
 # ---------------------------------------------------------------------------
