@@ -44,6 +44,10 @@
           {
             "group": "Local",
             "pages": ["install-local"]
+          },
+          {
+            "group": "Enterprise",
+            "pages": ["install-enterprise"]
           }
         ]
       },

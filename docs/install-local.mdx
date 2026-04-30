@@ -31,34 +31,46 @@ brew install Tracer-Cloud/opensre/opensre
 curl -fsSL https://install.opensre.com | bash
 ```
 
-### 2) Run onboarding
+### 2) Enter the OpenSRE shell
 
 ```bash
-opensre onboard
+opensre
 ```
 
-`opensre onboard` helps you configure:
+### 3) Run onboarding
+
+From inside the OpenSRE shell:
+
+```bash
+onboard
+```
+
+`onboard` helps you configure:
 
 - LLM provider (for investigation reasoning)
 - integration credentials
 - optional communication/reporting integrations
 
-### 3) Verify integration health
+### 4) Verify integration health
+
+From inside the OpenSRE shell:
 
 ```bash
-opensre integrations verify
+integrations verify
 ```
 
 To verify one integration:
 
 ```bash
-opensre integrations verify <integration-name>
+integrations verify <integration-name>
 ```
 
-### 4) Run your first investigation
+### 5) Run your first investigation
+
+From inside the OpenSRE shell:
 
 ```bash
-opensre investigate -i tests/e2e/kubernetes/fixtures/datadog_k8s_alert.json
+investigate -i tests/e2e/kubernetes/fixtures/datadog_k8s_alert.json
 ```
 
 ## Integration catalog

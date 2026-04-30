@@ -7,8 +7,8 @@ This guide is for teams that manage OpenSRE from the hosted web app.
 
 ## 1) Create your organization account
 
-Sign up at [app.tracer.cloud/sign-up](https://app.tracer.cloud/sign-up), then create or join your organization
-workspace.
+Sign up at [tracer.cloud](https://tracer.cloud) and then continue in
+[app.tracer.cloud/sign-up](https://app.tracer.cloud/sign-up) to create or join your organization workspace.
 
 ## 2) Complete workspace onboarding
 
@@ -22,8 +22,11 @@ In [app.tracer.cloud](https://app.tracer.cloud), follow onboarding to:
 
 Enterprise integrations are configured in the web app and shared across your organization.
 
-Open the integration catalog from:
+For Slack integration help, go to Support in the app and request assistance with Slack setup.
 
+Use the integration catalog and provider-specific docs from:
+
+- [Local integrations overview (dev preview)](http://localhost:3000/integrations-overview)
 - [Integrations overview](/integrations-overview)
 
 Each integration page documents required credentials, scopes, and verification guidance.
@@ -38,7 +41,9 @@ policies.
 If your engineers also run local investigations, use:
 
 ```bash
-opensre onboard
+opensre
+# then, inside the shell:
+onboard
 ```
 
 This configures local CLI access while keeping integrations documented in the same catalog under `Integrations`.
