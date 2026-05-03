@@ -1232,6 +1232,13 @@ Thanks goes to these amazing people:
             <sub><b>cloudenochcsis</b></sub>
         </a>
     </td>
+            <td align="center">
+        <a href="https://github.com/Thibault00">
+            <img src="https://avatars.githubusercontent.com/u/84420566?v=4" width="100" alt="Thibault00"/>
+            <br />
+            <sub><b>Thibault00</b></sub>
+        </a>
+    </td>
 		</tr>
 	</tbody>
 </table>
