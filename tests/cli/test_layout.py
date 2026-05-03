@@ -4,8 +4,8 @@ import click
 
 from app.cli.__main__ import cli
 from app.cli.support.layout import (
-    RichGroup,
     _SHORT_OPTIONS,
+    RichGroup,
     render_help,
     render_landing,
 )
