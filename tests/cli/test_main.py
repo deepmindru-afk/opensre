@@ -279,6 +279,10 @@ def test_main_captures_command_metadata_for_nested_remote_ops(monkeypatch, capsy
 def test_main_emits_first_run_install_before_cli_invoked(
     monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys
 ) -> None:
+    # This test validates analytics event ordering only; avoid real Sentry init
+    # side effects (e.g. sdk integration hooks) that are unrelated to the
+    # install/cli-invoked event contract.
+    monkeypatch.setattr("app.cli.__main__.init_sentry", lambda: None)
     provider.shutdown_analytics(flush=False)
     provider._instance = None
     provider._cached_anonymous_id = None
@@ -287,6 +291,7 @@ def test_main_emits_first_run_install_before_cli_invoked(
     provider._pending_user_id_load_failures.clear()
     monkeypatch.delenv("OPENSRE_NO_TELEMETRY", raising=False)
     monkeypatch.delenv("OPENSRE_ANALYTICS_DISABLED", raising=False)
+    monkeypatch.delenv("OPENSRE_SENTRY_DISABLED", raising=False)
     monkeypatch.delenv("DO_NOT_TRACK", raising=False)
     monkeypatch.setattr(provider, "_CONFIG_DIR", tmp_path)
     monkeypatch.setattr(provider, "_ANONYMOUS_ID_PATH", tmp_path / "anonymous_id")

@@ -15,7 +15,7 @@ from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
 from app.analytics.events import Event
-from app.analytics.provider import get_analytics
+from app.analytics.provider import Properties, get_analytics
 from app.constants import (
     SENTRY_DSN,
     SENTRY_ERROR_SAMPLE_RATE,
@@ -146,7 +146,7 @@ def _before_breadcrumb(crumb: dict[str, Any], _hint: dict[str, Any]) -> dict[str
 
 
 def _capture_sentry_init_skipped(reason: str, *, error_type: str | None = None) -> None:
-    properties: dict[str, str] = {"reason": reason}
+    properties: Properties = {"reason": reason}
     if error_type is not None:
         properties["error_type"] = error_type
     with suppress(Exception):
