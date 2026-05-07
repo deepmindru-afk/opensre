@@ -1347,16 +1347,16 @@ Thanks goes to these amazing people:
             <sub><b>abhinavgautam01</b></sub>
         </a>
     </td>
-            <td align="center">
+            <td align="center" width="8%">
         <a href="https://github.com/arian24b">
-            <img src="https://avatars.githubusercontent.com/u/45208666?v=4" width="60" alt="arian24b"/>
+            <img src="https://avatars.githubusercontent.com/u/45208666?v=4" width="45" alt="arian24b"/>
             <br />
             <sub><b>arian24b</b></sub>
         </a>
     </td>
-            <td align="center">
+            <td align="center" width="8%">
         <a href="https://github.com/Dhaxor">
-            <img src="https://avatars.githubusercontent.com/u/46064597?v=4" width="60" alt="Dhaxor"/>
+            <img src="https://avatars.githubusercontent.com/u/46064597?v=4" width="45" alt="Dhaxor"/>
             <br />
             <sub><b>Dhaxor</b></sub>
         </a>
