@@ -75,8 +75,7 @@ def switch_llm_provider(
     selected_model = model.strip() if model else provider.default_model
     if selected_model and not _is_reasoning_model_plausible(provider.value, selected_model):
         console.print(
-            f"[{TERMINAL_ERROR}]unknown model for {provider.value}:[/] "
-            f"{escape(selected_model)}"
+            f"[{TERMINAL_ERROR}]unknown model for {provider.value}:[/] {escape(selected_model)}"
         )
         console.print(
             "[dim]known reasoning models:[/dim] "
