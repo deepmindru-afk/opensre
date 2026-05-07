@@ -1354,6 +1354,13 @@ Thanks goes to these amazing people:
             <sub><b>arian24b</b></sub>
         </a>
     </td>
+            <td align="center">
+        <a href="https://github.com/Dhaxor">
+            <img src="https://avatars.githubusercontent.com/u/46064597?v=4" width="60" alt="Dhaxor"/>
+            <br />
+            <sub><b>Dhaxor</b></sub>
+        </a>
+    </td>
 		</tr>
 	</tbody>
 </table>
