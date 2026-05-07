@@ -3,9 +3,8 @@
 ## Build and Run commands
 
 - Build `make install` (creates `.venv` via `uv sync` and installs this repo in editable mode)
-- Run **`uv run opensre …`** from the repo root while developing — uses this checkout even if another `opensre` is on your `PATH` (for example from `install.sh`).
-- Or **`eval "$(./scripts/dev-path.sh)"`** then **`hash -r`** — prepends **`<repo>/.venv/bin`** so bare **`opensre`** matches this checkout.
-- Or activate `.venv` and run `opensre`; check **`which opensre`** resolves to **`<repo>/.venv/bin/opensre`**.
+- Run **`uv run opensre …`** from the repo root while developing — preferred approach, uses this checkout even if another `opensre` is on your `PATH`.
+- Use **`uv run python …`** for any Python commands instead of activating the virtualenv manually.
 
 ## Lint & Format
 
